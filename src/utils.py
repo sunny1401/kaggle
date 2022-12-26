@@ -8,11 +8,6 @@ from typing import Tuple
 
 import git
 
-def get_git_root(path):
-
-        git_repo = git.Repo(path, search_parent_directories=True)
-        git_root = git_repo.git.rev_parse("--show-toplevel")
-        print git_root
 
 @dataclass
 class KaggleDatasetCommands:
@@ -26,6 +21,8 @@ class KaggleDatasetCommands:
 class KaggleApi:
     git_repo = git.Repo(__file__, search_parent_directories=True)
     git_root = git_repo.git.rev_parse("--show-toplevel")
+
+
     KAGGLE_DATA_SAVE_LOCATION = os.path.join(
         git_root,
         "data"
