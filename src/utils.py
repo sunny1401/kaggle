@@ -3,10 +3,16 @@ import subprocess
 import pandas as pd
 import os
 import shutil
-from pathlib import Path
 import zipfile
 from typing import Tuple
 
+import git
+
+def get_git_root(path):
+
+        git_repo = git.Repo(path, search_parent_directories=True)
+        git_root = git_repo.git.rev_parse("--show-toplevel")
+        print git_root
 
 @dataclass
 class KaggleDatasetCommands:
@@ -18,9 +24,10 @@ class KaggleDatasetCommands:
 
 
 class KaggleApi:
-
+    git_repo = git.Repo(__file__, search_parent_directories=True)
+    git_root = git_repo.git.rev_parse("--show-toplevel")
     KAGGLE_DATA_SAVE_LOCATION = os.path.join(
-        str(Path(os.path.split(__file__)[0]).parent),
+        git_root,
         "data"
     )
     def __init__(self, dataset_name) -> None:
