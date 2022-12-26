@@ -23,7 +23,7 @@ class KaggleApi:
 
         git_repo = git.Repo(call_path, search_parent_directories=True)
         self.KAGGLE_DATA_SAVE_LOCATION = os.path.join(
-            git_root,
+            git_repo,
             "data"
         )
 
