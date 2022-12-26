@@ -11,7 +11,6 @@ import git
 
 @dataclass
 class KaggleDatasetCommands:
-
     list_all_competitions: str = "kaggle competitions list"
     survey_studies: str = "kaggle-survey-2022"
     transfer_learning_food_recognition: str = "transfer-learning-on-food-recognition"
@@ -19,34 +18,31 @@ class KaggleDatasetCommands:
 
 
 class KaggleApi:
-    git_repo = git.Repo(__file__, search_parent_directories=True)
-    git_root = git_repo.git.rev_parse("--show-toplevel")
 
+    def __init__(self, dataset_name, call_path: str) -> None:
 
-    KAGGLE_DATA_SAVE_LOCATION = os.path.join(
-        git_root,
-        "data"
-    )
-    def __init__(self, dataset_name) -> None:
-        
+        git_repo = git.Repo(call_path, search_parent_directories=True)
+        self.KAGGLE_DATA_SAVE_LOCATION = os.path.join(
+            git_root,
+            "data"
+        )
+
         try:
             self._dataset_file_name = getattr(KaggleDatasetCommands, dataset_name)
         except AttributeError:
             raise ValueError(f"The dataset name {self._dataset_name} doesn't exist in Kaggle")
         self._save_path = os.path.join(self.KAGGLE_DATA_SAVE_LOCATION, f"{self._dataset_file_name}.zip")
         self._dataset_name = dataset_name
-    
+
     @classmethod
     def list_all_kaggle_compeitions(cls) -> pd.DataFrame:
 
         file_name = os.path.join(cls.KAGGLE_DATA_SAVE_LOCATION, "kaggle_competition_list.txt")
 
         if not os.path.exists(file_name):
-
             with open(file_name, "w") as f:
                 subprocess.call(KaggleDatasetCommands.list_all_competitions.split(" "), stdout=f)
 
-        
         df = pd.read_fwf(file_name)
         df = df.iloc[1:, :]
         df.columns = ["competition_name", "deadline", "category", "reward", "team_count", "have_you_entered"]
@@ -59,7 +55,7 @@ class KaggleApi:
 
         if not os.path.exists(self._save_path):
             command = f"kaggle competitions download -c {self._dataset_file_name}".split(" ")
-            
+
             subprocess.call(command)
             current_location = os.path.join(os.getcwd(), f"{self._dataset_file_name}.zip")
 
@@ -67,7 +63,7 @@ class KaggleApi:
                 shutil.move(current_location, self._save_path)
 
         print(f"File downloaded and saved to:   {self._save_path}")
-    
+
     def unzip_and_return_folder_details(self) -> Tuple[str]:
 
         directory_to_save = os.path.join(os.path.split(self._save_path)[0], self._dataset_file_name)
