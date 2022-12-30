@@ -21,7 +21,11 @@ class KaggleApi:
 
     def __init__(self, dataset_name, call_path: str) -> None:
 
-        git_repo = git.Repo(call_path, search_parent_directories=True)
+        try:
+            git_repo = git.Repo(call_path, search_parent_directories=True).working_tree_dir
+        except git.exc.InvalidGitRepositoryError:
+            git_repo = git.Repo(__file__, search_parent_directories=True).working_tree_dir
+            
         self.KAGGLE_DATA_SAVE_LOCATION = os.path.join(
             git_repo,
             "data"
@@ -32,6 +36,7 @@ class KaggleApi:
         except AttributeError:
             raise ValueError(f"The dataset name {self._dataset_name} doesn't exist in Kaggle")
         self._save_path = os.path.join(self.KAGGLE_DATA_SAVE_LOCATION, f"{self._dataset_file_name}.zip")
+        os.makedirs(self._save_path, exists_ok = True)
         self._dataset_name = dataset_name
 
     @classmethod
