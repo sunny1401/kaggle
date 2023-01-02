@@ -9,8 +9,6 @@ It aims to make it easy to use kaggle datasets directly from python scripts.
 ### Installation
 The repo relies on setuptools and kaggle library packages. To install the repo please use one of the following options:
 
-``` 
--  
 
 ```bash
 pip install -U kaggle setuptools
@@ -25,3 +23,7 @@ On Windows: C:\Users\<Windows-username>\.kaggle\kaggle.json
 
 Others: ~/. kaggle/kaggle.json
 ```
+
+### Code details
+
+~ TODO

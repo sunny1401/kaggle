@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
-from src import __version__, KaggleApi
 
+__version__ = "dev"
 
 setup(
     name="kaggle_cli_wrapper",
@@ -11,7 +11,6 @@ setup(
     packages=find_packages(),
     install_requires=[
         "kaggle",
+        "pandas"
     ]
 )
-
-
