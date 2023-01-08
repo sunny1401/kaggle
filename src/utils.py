@@ -20,7 +20,7 @@ class KaggleCompetitionDatasets:
     survey_studies: str = "kaggle-survey-2022"
     transfer_learning_food_recognition: str = "transfer-learning-on-food-recognition"
     bike_sharing: str = "bike-sharing-demand"
-
+    facial_keypoints_detection: str = "facial-keypoints-detection"
 
 @dataclass
 class KaggleGeneralDatasets:
