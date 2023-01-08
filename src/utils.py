@@ -215,11 +215,13 @@ class KaggleDataApi:
             dataset_file_name = getattr(dataset_class, dataset_name)
 
         except AttributeError:
+            if "-" in dataset_file_name:
+                dataset_file_name = dataset_name
             # TODO - search the name of dataset in existing file list
             # for competitions
 
             # TODO - add handling wrong name for general datasets
-            dataset_file_name = dataset_name
+            
 
         self._save_path = os.path.join(self._save_path, f"{dataset_file_name}.zip")
 
