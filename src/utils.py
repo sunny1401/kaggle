@@ -60,7 +60,7 @@ class KaggleDataApi:
 
         self._save_path = self.KAGGLE_DATA_SAVE_LOCATION
         self._dataset_file_name = ""
-        os.makedirs(self._save_path, exists_ok = True)
+        os.makedirs(self._save_path, exist_ok = True)
 
     def __read_kaggle_downloaded_dataset_list(
         self, 
@@ -222,13 +222,24 @@ class KaggleDataApi:
 
             # TODO - add handling wrong name for general datasets
             
-
         self._save_path = os.path.join(self._save_path, f"{dataset_file_name}.zip")
-
         if not os.path.exists(self._save_path):
             command = f"{kaggle_command} download -c {dataset_file_name}".split(" ")
+            command = ['kaggle', 'competitions', 'download', '-c', 'facial-keypoints-detection']
+            result = subprocess.run(
+                command, 
+                stdout=subprocess.PIPE, 
+                stderr=subprocess.PIPE, 
+                universal_newlines=True
+            )
+            if result.returncode == 1:
+                print(result.stdout)
+                if result.stdout == "403 - Forbidden":
+                    raise ImportError(
+                        "Please accept the rules of the competition on the "
+                        "website before downloading the data"
+                    )
 
-            subprocess.call(command)
             current_location = os.path.join(os.getcwd(), f"{dataset_file_name}.zip")
 
             if self._save_path != current_location:
