@@ -60,7 +60,7 @@ class KaggleDataApi:
 
         self._save_path = self.KAGGLE_DATA_SAVE_LOCATION
         self._dataset_file_name = ""
-        os.makedirs(self._save_path, exists_ok = True)
+        os.makedirs(self._save_path, exist_ok = True)
 
     def __read_kaggle_downloaded_dataset_list(
         self, 
