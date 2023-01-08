@@ -20,7 +20,7 @@ class KaggleCompetitionDatasets:
     survey_studies: str = "kaggle-survey-2022"
     transfer_learning_food_recognition: str = "transfer-learning-on-food-recognition"
     bike_sharing: str = "bike-sharing-demand"
-
+    facial_keypoints_detection: str = "facial-keypoints-detection"
 
 @dataclass
 class KaggleGeneralDatasets:
@@ -215,11 +215,13 @@ class KaggleDataApi:
             dataset_file_name = getattr(dataset_class, dataset_name)
 
         except AttributeError:
+            if "-" in dataset_file_name:
+                dataset_file_name = dataset_name
             # TODO - search the name of dataset in existing file list
             # for competitions
 
             # TODO - add handling wrong name for general datasets
-            dataset_file_name = dataset_name
+            
 
         self._save_path = os.path.join(self._save_path, f"{dataset_file_name}.zip")
 
