@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 import subprocess
 import pandas as pd
 import os
@@ -7,30 +6,6 @@ import zipfile
 from typing import List, Optional, Tuple
 
 import git
-
-
-@dataclass
-class KaggleCompetitionDatasets:
-    """
-    Kaggle competition datasets
-    For getting other datasets, please use the list 
-    function to get correct dataset name
-    """
-    list_all_competitions: str = "kaggle competitions list"
-    survey_studies: str = "kaggle-survey-2022"
-    transfer_learning_food_recognition: str = "transfer-learning-on-food-recognition"
-    bike_sharing: str = "bike-sharing-demand"
-    facial_keypoints_detection: str = "facial-keypoints-detection"
-
-@dataclass
-class KaggleGeneralDatasets:
-    """
-    Datasets listed here are sorted by maximum votes.
-    For getting other datasets, please use the list 
-    function to get correct dataset name
-    """
-    covid_dataset: str = "allen-institute-for-ai/CORD-19-research-challenge"
-    nfl_dataset: str = "maxhorowitz/nflplaybyplay2009to2016"
 
 
 class KaggleDataApi:

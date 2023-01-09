@@ -1,10 +1,15 @@
-from setuptools import setup, find_packages
+from distutils.core import setup
+from setuptools import find_packages
 
-__version__ = "dev"
 
 setup(
     name="kaggle_cli_wrapper",
-    version=__version__,
+    description='Kaggle CLI Wrapper',
+    version=1.0,
+    long_description=('Wrapper over Kaggle official API for ease of use '
+    'while downloading competition datasets and general datasets.'
+    ),
+    keywords=['Kaggle', 'API', "Wrapper", "Python"],
     url="https://github.com/sunny1401/kaggle_utils",
     author="Sunny Joshi",
     suthor_email="sunnyjoshi1401@gmail.com",
