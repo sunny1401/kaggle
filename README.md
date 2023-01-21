@@ -1,5 +1,5 @@
 ### Introduction
-The repository adds simple class for adding a wrapper on top of kaggle cli tools for ease of downloading competition datasets, listing competitions, saving and zipping results in data folder, submission of results and getting scores for submissions. 
+The repository adds simple class for adding a wrapper on top of kaggle cli tools for ease of downloading competition datasets, listing competitions, downloading and un-zipping datasets.
 
 It aims to make it easy to use kaggle datasets directly from python scripts. 
  It's main usecase is to be used as a submodule in other repos/ or used as a standalone package.
@@ -24,6 +24,23 @@ On Windows: C:\Users\<Windows-username>\.kaggle\kaggle.json
 Others: ~/. kaggle/kaggle.json
 ```
 
+After the above steps: the repo can be installed from git using:
+
+```
+pip install git+https://github.com/sunny1401/kaggle_utils.git#egg=kaggle-cli-wrapper
+```
+
+The project can also be installed using pip:
+
+```
+pip install kaggle_cli_wrapper
+```
+
 ### Code details
 
-~ TODO
+#### To download datasets
+
+
+
+
+

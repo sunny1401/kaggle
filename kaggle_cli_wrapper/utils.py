@@ -1,36 +1,11 @@
-from dataclasses import dataclass
 import subprocess
 import pandas as pd
 import os
 import shutil
 import zipfile
 from typing import List, Optional, Tuple
-
+from enums import KaggleCompetitionDatasets, KaggleGeneralDatasets
 import git
-
-
-@dataclass
-class KaggleCompetitionDatasets:
-    """
-    Kaggle competition datasets
-    For getting other datasets, please use the list 
-    function to get correct dataset name
-    """
-    list_all_competitions: str = "kaggle competitions list"
-    survey_studies: str = "kaggle-survey-2022"
-    transfer_learning_food_recognition: str = "transfer-learning-on-food-recognition"
-    bike_sharing: str = "bike-sharing-demand"
-    facial_keypoints_detection: str = "facial-keypoints-detection"
-
-@dataclass
-class KaggleGeneralDatasets:
-    """
-    Datasets listed here are sorted by maximum votes.
-    For getting other datasets, please use the list 
-    function to get correct dataset name
-    """
-    covid_dataset: str = "allen-institute-for-ai/CORD-19-research-challenge"
-    nfl_dataset: str = "maxhorowitz/nflplaybyplay2009to2016"
 
 
 class KaggleDataApi:
@@ -38,7 +13,6 @@ class KaggleDataApi:
     """
     API has functions for listing competition and general datasets, 
     sending in submissions and getting scores of competitions.
-
     While competition datasets can be listed without a search term, 
     the same cannot be done for general datasets and they 
     require a search term to be listed/downloaded.
@@ -87,7 +61,6 @@ class KaggleDataApi:
 
         """
         Function lists all the kaggle competition datasets. It takes in optional arguments:
-
         Args:
             search_term: if provided dataset, that search term is used for searching the datasets
             sort_by: By default, we use earliestDeadline for sorting teh datasets. Other accepted 
@@ -193,7 +166,6 @@ class KaggleDataApi:
 
         """
         Download existing datasets from kaggle.
-
         Args:
             dataset_name: str is the name of the dataset to be downloaded.
                 It is first assumed to be key name in the dataclass for 
@@ -201,7 +173,6 @@ class KaggleDataApi:
                 If the dataset_name is not an attribute of the respective dataclass,
                 it is then assumed to be the actual name of the dataset to be downloaded.
             is_competition_dataset: Flag indicating if the dataset is a competition dataset
-
         """
         if is_competition_dataset:
             kaggle_command = "kaggle competitions"
@@ -263,3 +234,67 @@ class KaggleDataApi:
 
         return directory_to_save, files_extracted
 
+
+class KaggleScoringsApi:
+
+    def __init__(
+        self, 
+        competition_name: str
+    ):
+
+        self._competition_name = competition_name
+        self._score_df: pd.DataFrame = pd.DataFrame()
+        self._latest_score: int = -1
+
+
+    def submit_solution(self, submissions_file: str, description: str):
+
+        submission_command = (
+            "kaggle competitions submit "
+            f"-c {self._competition_name} -f {submissions_file} "
+            f"-m {description}"
+        )
+
+        if not os.path.exists(submissions_file):
+            raise FileNotFoundError(
+                "Please make sure you pass a valid path for submissions. You gave:"
+                f"{submissions_file}"
+            )
+
+        result = subprocess.run(
+            submission_command.split(" "), 
+            stdout=subprocess.PIPE, 
+            stderr=subprocess.PIPE, 
+            universal_newlines=True
+        )
+        if result.returncode == 1:
+            print(result.stdout)
+            if result.stdout == "403 - Forbidden":
+                raise ImportError(
+                    "Please accept the rules of the competition on the "
+                    "website before downloading the data"
+                )
+
+    def get_top_scores(self, number_of_scores = 5):
+
+        scoring_command = (
+            f"kaggle competitions submissions -c {self._competition_name}"
+            f" | tail -n 1 | -n {number_of_scores}"
+        )
+        result = subprocess.run(
+            scoring_command.split(" "), 
+            stdout=subprocess.PIPE, 
+            stderr=subprocess.PIPE, 
+            universal_newlines=True
+        )
+
+        # TODO -> save to scoring dataset
+        # TODO -> get latest score
+
+    @property.getter
+    def latest_score(self):
+        if self._latest_score == -1:
+            raise ValueError(
+                "Please make at least one submission using submit_solution function to get a score"
+            )
+        return self._latest_score
