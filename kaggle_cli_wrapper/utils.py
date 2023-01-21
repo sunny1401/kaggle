@@ -4,7 +4,7 @@ import os
 import shutil
 import zipfile
 from typing import List, Optional, Tuple
-from enums import KaggleCompetitionDatasets, KaggleGeneralDatasets
+from kaggle_cli_wrapper.enums import KaggleCompetitionDatasets, KaggleGeneralDatasets
 import git
 
 
