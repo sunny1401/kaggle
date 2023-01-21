@@ -13,7 +13,7 @@ setup(
     url="https://github.com/sunny1401/kaggle_utils",
     author="Sunny Joshi",
     suthor_email="sunnyjoshi1401@gmail.com",
-    packages=find_packages(),
+    packages=(find_packages()+find_packages(where="./kaggle_cli_wrapper")),
     install_requires=[
         "kaggle",
         "pandas",
