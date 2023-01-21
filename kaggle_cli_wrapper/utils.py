@@ -235,8 +235,66 @@ class KaggleDataApi:
         return directory_to_save, files_extracted
 
 
-class KaggleScoringSubmissionsApi:
+class KaggleCompetitionsApi:
 
     def __init__(
         self, 
-    )
+        competition_name: str
+    ):
+
+        self._competition_name = competition_name
+        self._score_df: pd.DataFrame = pd.DataFrame()
+        self._latest_score: int = -1
+
+
+    def submit_solution(self, submissions_file: str, description: str):
+
+        submission_command = (
+            "kaggle competitions submit "
+            f"-c {self._competition_name} -f {submissions_file} "
+            f"-m {description}"
+        )
+
+        if not os.path.exists(submissions_file):
+            raise FileNotFoundError(
+                "Please make sure you pass a valid path for submissions. You gave:"
+                f"{submissions_file}"
+            )
+
+        result = subprocess.run(
+            submission_command.split(" "), 
+            stdout=subprocess.PIPE, 
+            stderr=subprocess.PIPE, 
+            universal_newlines=True
+        )
+        if result.returncode == 1:
+            print(result.stdout)
+            if result.stdout == "403 - Forbidden":
+                raise ImportError(
+                    "Please accept the rules of the competition on the "
+                    "website before downloading the data"
+                )
+
+    def get_top_scores(self, number_of_scores = 5):
+
+        scoring_command = (
+            f"kaggle competitions submissions -c {self._competition_name}"
+            f" | tail -n 1 | -n {number_of_scores}"
+        )
+        result = subprocess.run(
+            scoring_command.split(" "), 
+            stdout=subprocess.PIPE, 
+            stderr=subprocess.PIPE, 
+            universal_newlines=True
+        )
+
+        # TODO -> save to scoring dataset
+        # TODO -> get latest score
+
+    @property.getter
+    def latest_score(self):
+        if self._latest_score == -1:
+            raise ValueError(
+                "Please make at least one submission using submit_solution function to get a score"
+            )
+        return self._latest_score
