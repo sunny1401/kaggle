@@ -13,10 +13,7 @@ target-version = ["py37", "py38", "py39", "py310"]
 name = "kaggle_cli_wrapper"
 version = "1.0"
 authors = [
-  {
-    name="Sunny Joshi", 
-    email="sunnyjoshi1401@gmail.com"
-  },
+  { name="Sunny Joshi", email="sunnyjoshi1401@gmail.com" },
 ]
 description = "Kaggle CLI based python wrapper"
 readme = "README.md"
