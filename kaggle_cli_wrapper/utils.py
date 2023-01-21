@@ -235,7 +235,7 @@ class KaggleDataApi:
         return directory_to_save, files_extracted
 
 
-class KaggleCompetitionsApi:
+class KaggleScoringsApi:
 
     def __init__(
         self, 
