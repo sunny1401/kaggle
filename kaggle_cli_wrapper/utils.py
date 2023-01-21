@@ -291,7 +291,7 @@ class KaggleScoringsApi:
         # TODO -> save to scoring dataset
         # TODO -> get latest score
 
-    @property.getter
+    @property
     def latest_score(self):
         if self._latest_score == -1:
             raise ValueError(
