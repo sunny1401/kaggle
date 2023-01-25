@@ -267,19 +267,21 @@ class KaggleScoringsApi:
             stderr=subprocess.PIPE, 
             universal_newlines=True
         )
+
+        print(f"Submission Output: {result.stdout}")
         if result.returncode == 1:
-            print(result.stdout)
+
             if result.stdout == "403 - Forbidden":
                 raise ImportError(
                     "Please accept the rules of the competition on the "
                     "website before downloading the data"
                 )
 
-    def get_top_scores(self, number_of_scores = 5):
+
+    def get_top_scores(self):
 
         scoring_command = (
             f"kaggle competitions submissions -c {self._competition_name}"
-            f" | tail -n 1 | -n {number_of_scores}"
         )
         result = subprocess.run(
             scoring_command.split(" "), 
@@ -287,9 +289,10 @@ class KaggleScoringsApi:
             stderr=subprocess.PIPE, 
             universal_newlines=True
         )
-
+        # TODO -> get error code
         # TODO -> save to scoring dataset
-        # TODO -> get latest score
+        print(result.stdout)
+
 
     @property
     def latest_score(self):
