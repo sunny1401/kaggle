@@ -1,7 +1,15 @@
 [build-system]
-requires = ["setuptools>=61.0", "kaggle", "requests", "future", "dataclasses"]
+requires = ["setuptools>=61.0"]
 # Use legacy backend to import local packages in setup.py
 build-backend = "setuptools.build_meta:__legacy__"
+
+[tool.poetry.dependencies]
+kaggle= "*"
+requests= "*"
+future = "*"
+dataclasses = "*"
+pandas = "1.5.3"
+gitpython = "*"
 
 
 [tool.black]
@@ -11,10 +19,11 @@ target-version = ["py37", "py38", "py39", "py310"]
 
 [project]
 name = "kaggle_cli_wrapper"
-version = "1.0"
+version = "1.1"
 authors = [
   { name="Sunny Joshi", email="sunnyjoshi1401@gmail.com" },
 ]
+keywords=['Kaggle', 'API', "Wrapper", "Python"]
 description = "Kaggle CLI based python wrapper"
 readme = "README.md"
 requires-python = ">=3.7"

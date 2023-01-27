@@ -5,18 +5,12 @@ from setuptools import find_packages
 setup(
     name="kaggle_cli_wrapper",
     description='Kaggle CLI Wrapper',
-    version=1.0,
+    version=1.1,
     long_description=('Wrapper over Kaggle official API for ease of use '
     'while downloading competition datasets and general datasets.'
     ),
-    keywords=['Kaggle', 'API', "Wrapper", "Python"],
     url="https://github.com/sunny1401/kaggle_utils",
     author="Sunny Joshi",
-    suthor_email="sunnyjoshi1401@gmail.com",
-    packages=(find_packages()+find_packages(where="./kaggle_cli_wrapper")),
-    install_requires=[
-        "kaggle",
-        "pandas",
-        "gitpython"
-    ]
+    author_email="sunnyjoshi1401@gmail.com",
+    packages=(find_packages()+find_packages(where="./kaggle_cli_wrapper"))
 )
