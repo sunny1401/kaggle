@@ -31,7 +31,6 @@ class KaggleDataApi:
             git_repo,
             "data"
         )
-
         self._save_path = self.KAGGLE_DATA_SAVE_LOCATION
         self._dataset_file_name = ""
         os.makedirs(self._save_path, exist_ok = True)
@@ -92,7 +91,7 @@ class KaggleDataApi:
             )
             file_save_path = f"kaggle_competition_list.txt"
 
-        file_name = os.path.join(self.KAGGLE_DATA_SAVE_LOCATION, file_save_path)
+        file_name = os.path.join(self._save_path, file_save_path)
 
         if not os.path.exists(file_name):
             with open(file_name, "w") as f:
@@ -110,9 +109,7 @@ class KaggleDataApi:
             column_names=column_names,
             search_term=search_term
         )
-        
 
-    @classmethod
     def list_all_kaggle_datasets(self, search_term, sort_by: str = "votes") -> pd.DataFrame:
         """
         List all datasets available for a particular search term.
@@ -144,12 +141,12 @@ class KaggleDataApi:
                 subprocess.call(dataset_list_command.split(" "), stdout=f)
         
         column_names = [
-            "competition_name", 
-            "download_count", "votes", 
-            "usability_rating", 
-            "title", 
-            "size",
-            "last_updated"
+            "dataset_name", 
+            "dataset_description", "size", 
+            "last_udated", 
+            "download_count", 
+            "votes",
+            "relevance_score"
         ]
 
         return self.__read_kaggle_downloaded_dataset_list(
@@ -186,7 +183,7 @@ class KaggleDataApi:
             dataset_file_name = getattr(dataset_class, dataset_name)
 
         except AttributeError:
-            if "-" in dataset_file_name:
+            if "-" in dataset_name:
                 dataset_file_name = dataset_name
             # TODO - search the name of dataset in existing file list
             # for competitions
@@ -195,8 +192,8 @@ class KaggleDataApi:
             
         self._save_path = os.path.join(self._save_path, f"{dataset_file_name}.zip")
         if not os.path.exists(self._save_path):
-            command = f"{kaggle_command} download -c {dataset_file_name}".split(" ")
-            command = ['kaggle', 'competitions', 'download', '-c', 'facial-keypoints-detection']
+            command = f"{kaggle_command} download {dataset_file_name}".split(" ")
+
             result = subprocess.run(
                 command, 
                 stdout=subprocess.PIPE, 
@@ -210,7 +207,8 @@ class KaggleDataApi:
                         "Please accept the rules of the competition on the "
                         "website before downloading the data"
                     )
-
+                # TODO -> check for other errors
+            dataset_file_name = dataset_file_name.split("//")[-1]
             current_location = os.path.join(os.getcwd(), f"{dataset_file_name}.zip")
 
             if self._save_path != current_location:

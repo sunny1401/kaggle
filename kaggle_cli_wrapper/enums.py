@@ -27,3 +27,4 @@ class KaggleGeneralDatasets:
     """
     covid_dataset: str = "allen-institute-for-ai/CORD-19-research-challenge"
     nfl_dataset: str = "maxhorowitz/nflplaybyplay2009to2016"
+    cityscapes_train_val_test: str = "chrisviviers/cityscapes-leftimg8bit-trainvaltest"
