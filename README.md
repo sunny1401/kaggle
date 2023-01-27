@@ -105,7 +105,7 @@ kaggle_scoring_api.get_top_scores()
 
 ## Remaining Issues
 
-- imporve error handling 
+- improve error handling 
 - allow for saving of stdout
 
 
