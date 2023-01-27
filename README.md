@@ -33,12 +33,81 @@ pip install git+https://github.com/sunny1401/kaggle_utils.git#egg=kaggle-cli-wra
 The project can also be installed using pip:
 
 ```
-pip install kaggle_cli_wrapper
+pip install kaggle-cli-wrapper
 ```
 
-### Code details
+## Code details
+
+### DataAPI class
+
+#### To list all available datasets
+
+```python
+from kaggle_cli_wrapper import KaggleDataApi
+
+kda = KaggleDataApi(call_path=__file__)
+kda.list_all_kaggle_datasets(search_term="cityscapes")
+```
+The call_path argument is required to decide the folder where downloaded files are stored.
+
+The function would return all available datasets with cityscape. This would also be saved as a .txt file. 
+
+Currently the list is sorted by "votes".
+To change this sorting please use the argument ```sort_by```. Allowed values of sort by are: 
+
+```python
+'hottest', 'votes', 'updated', 'active', 'published'
+```
+
+
+#### To list all available competition datasets
+
+```python
+from kaggle_cli_wrapper import KaggleDataApi
+
+kda = KaggleDataApi(call_path=__file__)
+kda.list_all_kaggle_competitions(search_term="cityscapes")
+```
+
+Currently the list is sorted by "earliestDeadline".
+To change this sorting please use the argument ```sort_by```. Allowed values of sort by are: 
+
+```python
+'grouped', 'prize', 'earliestDeadline','latestDeadline', 'numberOfTeams', 'recentlyCreated'
+
+```
 
 #### To download datasets
+```python
+from kaggle_cli_wrapper import KaggleDataApi
+
+kda = KaggleDataApi(call_path=__file__)
+kda.download_kaggle_dataset(dataset_name="cityscapes_train_val_test", is_competition_dataset=False)
+```
+
+To download a competition dataset, is_competition_dataset needs to be set to True
+
+
+### ScoringAPI
+
+The code currently supports minimum functionality for submission of files to a competition and getting scores for the competition
+
+#### To submit to a competition
+
+```python
+from kaggle_utils.kaggle_cli_wrapper import KaggleScoringsApi
+
+kaggle_scoring_api = KaggleScoringsApi(competition_name="facial-keypoints-detection")
+
+kaggle_scoring_api.submit_solution(submissions_file=submission_path, description="facial_keypoint_vanilla_cnn")
+kaggle_scoring_api.get_top_scores()
+```
+
+## Remaining Issues
+
+- imporve error handling 
+- allow for saving of stdout
+
 
 
 
