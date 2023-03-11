@@ -19,7 +19,7 @@ target-version = ["py37", "py38", "py39", "py310"]
 
 [project]
 name = "kaggle_cli_wrapper"
-version = "0.1"
+version = "0.1b"
 authors = [
   { name="Sunny Joshi", email="sunnyjoshi1401@gmail.com" },
 ]
