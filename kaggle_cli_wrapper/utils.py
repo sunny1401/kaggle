@@ -142,7 +142,7 @@ class KaggleDataApi:
                 dataset_list_command = (
                     f"{self.kaggle_list_general_datasets_command} -s {search_term} --sort-by {sort_by}"
                 )
-                subprocess.call(dataset_list_command.split(" "), stdout=f)
+                subprocess.call(dataset_list_command.split(" "), stdout=f, shell=True)
         
         column_names = [
             "dataset_name", 
