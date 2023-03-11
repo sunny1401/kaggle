@@ -1,5 +1,6 @@
 import subprocess
 import pandas as pd
+from pathlib import Path
 import os
 import shutil
 import zipfile
@@ -25,7 +26,10 @@ class KaggleDataApi:
         try:
             git_repo = git.Repo(call_path, search_parent_directories=True).working_tree_dir
         except git.exc.InvalidGitRepositoryError:
-            git_repo = git.Repo(__file__, search_parent_directories=True).working_tree_dir
+            try:
+                git_repo = git.Repo(__file__, search_parent_directories=True).working_tree_dir
+            except git.exc.InvalidGitRepositoryError:
+                git_repo = call_path if os.path.isdir(call_path) else str(Path(call_path).parent)
             
         self.KAGGLE_DATA_SAVE_LOCATION = os.path.join(
             git_repo,
