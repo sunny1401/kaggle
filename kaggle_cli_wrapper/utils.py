@@ -29,7 +29,7 @@ class KaggleDataApi:
             try:
                 git_repo = git.Repo(__file__, search_parent_directories=True).working_tree_dir
             except git.exc.InvalidGitRepositoryError:
-                git_repo = call_path if os.path.isdir(call_path) else str(Path(call_path).parent)
+                git_repo = str(Path(call_path).parent)
             
         self.KAGGLE_DATA_SAVE_LOCATION = os.path.join(
             git_repo,
@@ -133,7 +133,7 @@ class KaggleDataApi:
             )
 
         file_name = os.path.join(
-            self.KAGGLE_DATA_SAVE_LOCATION, 
+            self._save_path,
             f"kaggle_dataset_list_{search_term}.txt"
         )
 
